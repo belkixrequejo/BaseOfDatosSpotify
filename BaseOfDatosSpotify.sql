@@ -125,3 +125,10 @@ Entrada time,
 Salida time,
 primary key(Id_Auditoria)
 )engine=InnoDB;
+
+#insertar datos en la tabla Rol 
+insert into Rol (Id_Rol, Nombre) values (1, 'Invitado');
+insert into Rol (Id_Rol, Nombre) values (2, 'Premiun');
+insert into Rol (Id_Rol, Nombre) values (3, 'Administrador');
+insert into Rol (Id_Rol, Nombre) values (4, 'Artista');
+
