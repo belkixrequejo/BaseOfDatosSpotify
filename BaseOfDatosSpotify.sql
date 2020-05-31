@@ -121,6 +121,16 @@ constraint Id_Usuario foreign key(Id_Usuario) references Usuario(Id_Usuario),
 constraint Id_Cancion foreign key(Id_Cancion) references Cancion(Id_Cancion)
 );
 
+create table Cancion_Escuchada(
+Id_CE int not null auto_increment,
+Duracion_CE time,
+Id_Usuario int not null,
+Id_Cancion int not null,
+primary key(Id_CE),
+constraint Id_Usuario_CE foreign key(Id_Usuario) references Usuario(Id_Usuario),
+constraint Id_Cancion_CE foreign key(Id_Cancion) references Cancion(Id_Cancion)
+);
+
 create table Auditoria(
 Id_Auditoria int not null auto_increment,
 Procedimiento varchar(50),
@@ -1449,3 +1459,5 @@ CREATE VIEW ReporteIngresoUsuarios AS
 SELECT Usuario.Nombre_Usuario, MAX(Auditoria.entrada) as Ultima_fecha_Ingreso, count(Auditoria.Id_Usuario) as Cantidad_Ingreso
 FROM Usuario, Auditoria
 WHERE Auditoria.Procedimiento='Login' and Usuario.Id_Usuario=Auditoria.Id_Usuario and Auditoria.Id_Usuario group by  Auditoria.Id_Usuario;
+
+
