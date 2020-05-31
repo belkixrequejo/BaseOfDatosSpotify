@@ -128,6 +128,11 @@ Entrada time,
 Salida time,
 primary key(Id_Auditoria)
 )engine=InnoDB;
+ALTER TABLE Auditoria ADD Id_Usuario int ;
+ALTER TABLE Auditoria
+ADD FOREIGN KEY (Id_Usuario) REFERENCES Usuario(Id_Usuario);
+alter table Auditoria modify Entrada datetime;
+alter table Auditoria modify Salida datetime;
 
 #insertar datos en la tabla Rol 
 insert into Rol (Id_Rol, Nombre) values (1, 'Invitado');
@@ -1362,3 +1367,85 @@ insert into Pago (Id_Pago, Id_Usuario, Nombre_PTarjeta, Numero_Tarjeta, Fecha_Ve
 insert into Pago (Id_Pago, Id_Usuario, Nombre_PTarjeta, Numero_Tarjeta, Fecha_Vencimiento, codigo_Seguridad_, Tipo_Tarjeta) values (98, 98, 'Kory', '560223580662663751', '2019/12/07', 98, 'china-unionpay');
 insert into Pago (Id_Pago, Id_Usuario, Nombre_PTarjeta, Numero_Tarjeta, Fecha_Vencimiento, codigo_Seguridad_, Tipo_Tarjeta) values (99, 99, 'Kalindi', '5108750078771748', '2019/09/11', 99, 'mastercard');
 insert into Pago (Id_Pago, Id_Usuario, Nombre_PTarjeta, Numero_Tarjeta, Fecha_Vencimiento, codigo_Seguridad_, Tipo_Tarjeta) values (100, 100, 'Marylee', '3568991763896774', '2020/03/02', 100, 'jcb');
+
+
+#upedate Auditoria
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login' WHERE (`Id_Auditoria` = '1');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '2' WHERE (`Id_Auditoria` = '5');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '2' WHERE (`Id_Auditoria` = '7');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '3' WHERE (`Id_Auditoria` = '10');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '1' WHERE (`Id_Auditoria` = '8');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '4' WHERE (`Id_Auditoria` = '9');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '4' WHERE (`Id_Auditoria` = '11');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '5' WHERE (`Id_Auditoria` = '12');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '6' WHERE (`Id_Auditoria` = '13');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '7' WHERE (`Id_Auditoria` = '14');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '8' WHERE (`Id_Auditoria` = '15');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '8' WHERE (`Id_Auditoria` = '16');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '9' WHERE (`Id_Auditoria` = '17');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '10' WHERE (`Id_Auditoria` = '18');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '11' WHERE (`Id_Auditoria` = '19');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '12' WHERE (`Id_Auditoria` = '20');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '13' WHERE (`Id_Auditoria` = '21');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '13' WHERE (`Id_Auditoria` = '22');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '14' WHERE (`Id_Auditoria` = '23');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '15' WHERE (`Id_Auditoria` = '24');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '18' WHERE (`Id_Auditoria` = '25');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '20' WHERE (`Id_Auditoria` = '26');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '22' WHERE (`Id_Auditoria` = '27');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '24' WHERE (`Id_Auditoria` = '28');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '26' WHERE (`Id_Auditoria` = '29');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '28' WHERE (`Id_Auditoria` = '30');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '30' WHERE (`Id_Auditoria` = '31');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '31' WHERE (`Id_Auditoria` = '32');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '35' WHERE (`Id_Auditoria` = '33');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '36' WHERE (`Id_Auditoria` = '34');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '40' WHERE (`Id_Auditoria` = '35');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '24' WHERE (`Id_Auditoria` = '38');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '42' WHERE (`Id_Auditoria` = '40');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '48' WHERE (`Id_Auditoria` = '41');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '50' WHERE (`Id_Auditoria` = '39');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '51' WHERE (`Id_Auditoria` = '37');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '56' WHERE (`Id_Auditoria` = '44');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '56' WHERE (`Id_Auditoria` = '45');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '57' WHERE (`Id_Auditoria` = '43');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '59' WHERE (`Id_Auditoria` = '42');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '60' WHERE (`Id_Auditoria` = '36');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '60' WHERE (`Id_Auditoria` = '46');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '71' WHERE (`Id_Auditoria` = '47');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '32' WHERE (`Id_Auditoria` = '48');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '76' WHERE (`Id_Auditoria` = '49');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '80' WHERE (`Id_Auditoria` = '50');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '82' WHERE (`Id_Auditoria` = '51');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '85' WHERE (`Id_Auditoria` = '52');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '45' WHERE (`Id_Auditoria` = '53');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '67' WHERE (`Id_Auditoria` = '54');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '70' WHERE (`Id_Auditoria` = '55');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '75' WHERE (`Id_Auditoria` = '56');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '90' WHERE (`Id_Auditoria` = '57');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '100' WHERE (`Id_Auditoria` = '67');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '23' WHERE (`Id_Auditoria` = '58');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '67' WHERE (`Id_Auditoria` = '59');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '56' WHERE (`Id_Auditoria` = '60');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '90' WHERE (`Id_Auditoria` = '61');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '53' WHERE (`Id_Auditoria` = '62');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '74' WHERE (`Id_Auditoria` = '63');
+UPDATE `spotify`.`Auditoria` SET `Procedimiento` = 'Login', `Id_Usuario` = '74' WHERE (`Id_Auditoria` = '64');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '80' WHERE (`Id_Auditoria` = '65');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '85' WHERE (`Id_Auditoria` = '66');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '85' WHERE (`Id_Auditoria` = '68');
+UPDATE `spotify`.`Auditoria` SET `Id_Usuario` = '85' WHERE (`Id_Auditoria` = '69');
+
+#view
+use spotify;
+CREATE VIEW ReporteIngresoUsuarios AS
+SELECT Usuario.Nombre_Usuario, Auditoria.entrada, COUNT(Auditoria.Id_Usuario) as Cantidad_Ingreso
+FROM Usuario, Auditoria
+WHERE Auditoria.Procedimiento='Login' and Usuario.Id_Usuario=Auditoria.Id_Usuario   ;
+use spotify;
+
+#reporte de ingresos de usuarios
+CREATE VIEW ReporteIngresoUsuarios AS
+SELECT Usuario.Nombre_Usuario, MAX(Auditoria.entrada) as Ultima_fecha_Ingreso, count(Auditoria.Id_Usuario) as Cantidad_Ingreso
+FROM Usuario, Auditoria
+WHERE Auditoria.Procedimiento='Login' and Usuario.Id_Usuario=Auditoria.Id_Usuario and Auditoria.Id_Usuario group by  Auditoria.Id_Usuario;
