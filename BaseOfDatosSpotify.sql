@@ -1573,6 +1573,9 @@ AND Usuario.Id_Usuario = Cancion_Escuchada.Id_Usuario
 GROUP BY Nombre_Cancion ORDER BY Numero_Visitas DESC LIMIT 3;
 
 #mostrar la lista de reproducion por usuarios y junto a ella las canciones de sugerencias por cado uno
-SELECT Lista_Reproducion.Id_LR, 
+CREATE VIEW Reproducion_Cancion_Usuario AS
+SELECT Usuario.Nombre_Usuario, Lista_Reproduccion.Nombre_LR, Sugerencia_Canciones.Nombre_Sugerencia, Cancion.Nombre_Cancion
+FROM Usuario, Lista_Reproduccion,Sugerencia_Canciones,Cancion
+WHERE Usuario.Id_Usuario=Lista_Reproduccion.Id_Usuario and Cancion.Id_Cancion=Sugerencia_Canciones.Id_Cancion;
 
 
