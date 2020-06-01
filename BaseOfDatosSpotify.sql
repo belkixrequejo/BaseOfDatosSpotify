@@ -1564,10 +1564,15 @@ FROM Usuario, Auditoria
 WHERE Auditoria.Procedimiento='Login' and Usuario.Id_Usuario=Auditoria.Id_Usuario and Auditoria.Id_Usuario group by  Auditoria.Id_Usuario;
 
 #canciones mas escuchados
+CREATE VIEW Canciones_Mas_Escuchados AS
 SELECT DISTINCT Nombre_Cancion, Nombre_Disco, Nombre_Artista, Numero_Visitas, Cancion_Escuchada.Id_Usuario
 FROM Cancion, Disco, Artistas, Usuario, Cancion_Escuchada
 WHERE Cancion.Id_Disco = Disco.Id_Disco 
 AND Artistas.Id_Artista = Disco.Id_Artista
 AND Usuario.Id_Usuario = Cancion_Escuchada.Id_Usuario
 GROUP BY Nombre_Cancion ORDER BY Numero_Visitas DESC LIMIT 3;
+
+#mostrar la lista de reproducion por usuarios y junto a ella las canciones de sugerencias por cado uno
+SELECT Lista_Reproducion.Id_LR, 
+
 
