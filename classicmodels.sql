@@ -7929,9 +7929,8 @@ insert  into `products`(`productCode`,`productName`,`productLine`,`productScale`
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-/*--------------Vistas-------------*/
-Use classicmodels;
-CREATE VIEW Productos_Mas_Vendido AS
+#cual es el producto más vendido
+CREATE VIEW producto_mas_vendido AS
 select p.productName, p.productLine, sum(quantityOrdered) as total_ventas, count(distinct c.customerNumber) as total_compradores
 from products p, orderdetails od, orders o, customers c
 where od.productCode = p.productCode
@@ -7940,3 +7939,40 @@ and o.customerNumber = c.customerNumber
 group by p.productCode
 order by total_ventas desc;
 
+#cual ha sido el cliente con mayor cantidad de compras
+use classicmodels;
+
+create view cliente_mayor_compras as
+select o.orderDate , c.customerName,  p.productName, sum(od.quantityOrdered*od.priceEach) VentaTotal, count(o.customerNumber) Clientes
+from customers c,products p, orderdetails od, orders o
+where p.productCode=od.productCode and o.orderNumber=od.orderNumber 
+
+order by orderDate desc
+limit 1;
+
+#Crear un procedimiento para registrar un pedido de un producto
+use classicmodels;
+
+DELIMITER //
+CREATE PROCEDURE ordenar_producto (orderNumberP INT, orderDateP DATE, requiredDateP DATE,
+                                 shippedDateP DATE, statusP VARCHAR(15), commentsP TEXT,
+                                 customerNumberP INT, productCodeP VARCHAR(15),
+                                 quantityOrderedP INT, priceEachP DECIMAL(10, 2), orderLineNumberP SMALLINT)
+BEGIN
+    START TRANSACTION;
+            INSERT  INTO `orders`(`orderNumber`,`orderDate`,`requiredDate`,`shippedDate`,`status`,`comments`,`customerNumber`)
+            VALUES (orderNumberP,orderDateP,requiredDateP,shippedDateP,statusP,commentsP,customerNumberP);
+
+            INSERT  INTO `orderdetails`(`orderNumber`,`productCode`,`quantityOrdered`,`priceEach`,`orderLineNumber`)
+            VALUES  (orderNumberP,productCodeP,quantityOrderedP,priceEachP,orderLineNumberP);
+END //
+DELIMITER ;
+
+
+CALL ordenar_producto(4040, curdate(), curdate(), curdate(), 'recibido', NULL,
+              363, 'S18_1749', 20, 150.70, 7);
+
+
+SELECT * FROM orderdetails WHERE orderNumber = 4040;
+
+SELECT * FROM orders WHERE orderNumber = 4040 ;

@@ -1481,12 +1481,12 @@ insert into Cancion_Escuchada (Id_CE, Duracion_CE, Id_Usuario, Id_Cancion) value
 insert into Cancion_Escuchada (Id_CE, Duracion_CE, Id_Usuario, Id_Cancion) values (100, '13:26:32', 100, 100);
 
 select * from Auditoria;
-#reporte de los usuarios ingresado
-USE Spotify;
+#reporte de ingresos de usuarios
 CREATE VIEW ReporteIngresoUsuarios AS
-SELECT Usuario.Nombre_Usuario, Max(Auditoria.entrada)as Ultimo_Ingreso, count(Auditoria.Id_Usuario) as Cantidad_Ingreso
+SELECT Usuario.Nombre_Usuario, MAX(Auditoria.entrada) as Ultima_fecha_Ingreso, count(Auditoria.Id_Usuario) as Cantidad_Ingreso
 FROM Usuario, Auditoria
 WHERE Auditoria.Procedimiento='Login' and Usuario.Id_Usuario=Auditoria.Id_Usuario and Auditoria.Id_Usuario group by  Auditoria.Id_Usuario;
+
 
 #las canciones escuchado
 USE Spotify;
