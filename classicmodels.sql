@@ -8188,3 +8188,6 @@ SELECT * from logProducto;
 update products set productScale ='2:50'  where productCode='Cosm1009';
 SELECT * from logProducto;
 
+
+
+
