@@ -7976,3 +7976,215 @@ CALL ordenar_producto(4040, curdate(), curdate(), curdate(), 'recibido', NULL,
 SELECT * FROM orderdetails WHERE orderNumber = 4040;
 
 SELECT * FROM orders WHERE orderNumber = 4040 ;
+
+
+#Disparadores
+#Generar un registro en caso de que se elimina algo de las siguientes tablas: productlines, product, customers
+
+use classicmodels;
+DROP TABLE IF EXISTS productlinesEliminados;
+CREATE TABLE productlinesEliminados
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    productLine VARCHAR(50) not null,
+    textDescription VARCHAR(4000),
+    htmlDescription MEDIUMTEXT,
+    image MEDIUMBLOB,
+    fecha_de_eliminacion TIMESTAMP DEFAULT NOW()
+);
+DROP TABLE IF EXISTS productsEliminados;
+CREATE TABLE productsEliminados
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    productCode varchar(15) not null,
+    productName varchar(70) not null,
+    productLine VARCHAR(50) not null,
+    productScale varchar(10) not null,
+    productVendor varchar(50) not null,
+    productDescription text not null,
+    quantityInStock smallint(6) not null,
+    buyPrice decimal(10,2) not null,
+    MSRP decimal(10,2) not null,
+    fecha_de_eliminacion TIMESTAMP DEFAULT NOW()
+);
+DROP TABLE IF EXISTS customersEliminados;
+CREATE TABLE customersEliminados
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    customerNumber int(11) not null,
+    customerName varchar(50) not null,
+    contactLastName varchar(50) not null,
+    contactFirstName varchar(50) not null,
+    phone varchar(50) not null,
+    addressLine1 varchar(50) not null,
+    addressLine2 varchar(50) ,
+    city varchar(50) not null,
+    state varchar(50),
+    postalCode varchar(15),
+    country varchar(50),
+    salesRepEmployeeNumber int(11),
+    creditLimit decimal(10,2),
+    fecha_de_eliminacion TIMESTAMP DEFAULT NOW()
+);
+#Crear los disparadores
+use classicmodels;
+DELIMITER //
+DROP TRIGGER IF EXISTS before_productline_eliminar;
+CREATE TRIGGER before_productline_eliminar
+    BEFORE DELETE
+    ON productlines
+    FOR EACH ROW
+BEGIN
+    INSERT INTO productlinesEliminados(productLine, textDescription, htmlDescription, image)
+    VALUES (OLD.productLine, OLD.textDescription, OLD.htmlDescription, OLD.image);
+END//
+DELIMITER ;
+DELIMITER aa
+DROP TRIGGER IF EXISTS before_product_eliminar;
+CREATE TRIGGER before_product_eliminar
+    BEFORE DELETE
+    ON products
+    FOR EACH ROW
+BEGIN
+    INSERT INTO productsEliminados(productCode, productName, productLine, productScale, productVendor, productDescription, quantityInStock, buyPrice, MSRP)
+    VALUES (OLD.productCode, OLD.productName, OLD.productLine, OLD.productScale, OLD.productVendor, OLD.productDescription, OLD.quantityInStock, OLD.buyPrice, OLD.MSRP);
+END aa
+
+DELIMITER ;
+
+DELIMITER rr
+DROP TRIGGER IF EXISTS before_customer_eliminar;
+CREATE TRIGGER before_customer_eliminar
+    BEFORE DELETE
+    ON customers
+    FOR EACH ROW
+BEGIN
+    INSERT INTO customersEliminados( customerNumber, customerName, contactLastName, contactFirstName, phone, 
+    addressLine1, addressLine2, city, state, postalCode, country, salesRepEmployeeNumber, creditLimit)
+    VALUES (OLD.customerNumber, OLD.customerName, OLD.contactLastName, OLD.contactFirstName, OLD.phone, 
+    OLD.addressLine1, OLD.addressLine2, OLD.city, OLD.state, OLD.postalCode, OLD.country, OLD.salesRepEmployeeNumber, OLD.creditLimit);
+END rr
+
+DELIMITER ;
+
+#Ejecucion
+insert into productlines(productLine, textDescription,htmlDescription,image)
+values('Tester','Es un campo tester',null,null);
+SELECT * from productlines where productLine='Tester';
+
+delete from productlines where productline='Tester';
+select * from productlinesEliminados;
+
+#Registros que se elimina en la tabla employees tiene que pasar a una tabla exEmployees al borrarlos
+DROP TABLE IF EXISTS exEmployees;
+CREATE TABLE exEmployees
+(
+    id int primary key auto_increment,
+    employeeNumber int(11) not null,
+    lastName varchar(50) not null,
+    firstName varchar(50) not null,
+    extension varchar(10) not null,
+    email varchar(100) not null,
+    officeCode varchar(10) not null,
+    reportsTo int(11),
+    jobTitle varchar(50) not null,
+    fecha_de_eliminacion timestamp default now()
+);
+use classicmodels;
+DELIMITER //
+DROP TRIGGER IF EXISTS before_employee_eliminar;
+CREATE TRIGGER before_employee_eliminar
+    BEFORE DELETE
+    ON employees
+    FOR EACH ROW
+BEGIN
+    INSERT INTO exEmployees(employeeNumber, lastName, firstName, extension, email, officeCode, reportsTo, jobTitle)
+    VALUES (OLD.employeeNumber, OLD.lastName, OLD.firstName, OLD.extension, OLD.email, OLD.officeCode, OLD.reportsTo, OLD.jobTitle);
+END //
+
+DELIMITER ;
+#Ejecucion
+use classicmodels;
+insert into employees(employeeNumber,lastName,firstName,extension,email,officeCode,reportsTo,jobTitle)
+values(1900,'Belkix','Requejo','SD','belkixrequejo@gmail.com',3,1102,'Deverlop');
+SELECT * from employees where employeeNumber=1900;
+
+
+delete from employees where employeeNumber=1900;
+select * from exEmployees;
+
+
+
+#Impedir que se puede borrar algo de las tablas orders y payments
+
+DELIMITER //
+DROP TRIGGER IF EXISTS Before_order_no_eliminar;
+CREATE TRIGGER Before_order_no_eliminar
+   BEFORE DELETE ON orders
+FOR EACH ROW
+BEGIN
+   If Old.orderNumber is not null then
+   SIGNAL SQLSTATE '45000'
+   SET MESSAGE_TEXT = 'No puede eliminar este registro de la tabla orders';
+End If;
+END //
+DELIMITER ;
+
+DELIMITER //
+DROP TRIGGER IF EXISTS Before_payments_no_eliminar;
+CREATE TRIGGER Before_payments_no_eliminar
+   BEFORE DELETE ON payments
+FOR EACH ROW
+BEGIN
+   If Old.checkNumber is not null then
+   SIGNAL SQLSTATE '45000'
+   SET MESSAGE_TEXT = 'No puede eliminar este registro de la tabla payments';
+End If;
+END //
+DELIMITER ;
+delete from orders where orderNumber=10426;
+
+#Actualizaciones o inserts a la tabla products tiene que registrarse en una tabla logProducto
+DROP TABLE IF EXISTS logProducto; 
+CREATE TABLE logProducto( 
+id int auto_increment, 
+productCode varchar(15), 
+dateLog timestamp default now(), 
+descripcion varchar(255) not null, 
+primary key (id, productCode) 
+); 
+#Disparador
+
+DELIMITER // 
+DROP TRIGGER IF EXISTS after_insertar_products; 
+create trigger after_insertar_products 
+after insert on products 
+for each row 
+Begin 
+		INSERT INTO logProducto(productCode, descripcion) 
+        VALUES (new.productCode, CONCAT('Se ha insertado un nuevo producto: ', NEW.productName)); 
+End // 
+DELIMITER ; 
+
+
+DELIMITER // 
+DROP TRIGGER IF EXISTS after_actualizar_products; 
+create trigger after_actualizar_products 
+after update on products 
+for each row 
+Begin 
+		INSERT INTO logProducto(productCode, descripcion) 
+        VALUES (old.productCode, CONCAT('Se ha actualizado un producto: ', old.productName)); 
+End // 
+DELIMITER ; 
+
+#ejecucion
+use classicmodels;
+insert into products (productCode,productName,productLine,productScale,productVendor,productDescription,quantityInStock,buyPrice,MSRP)
+values('Cosm1009','Labiales','Ships','1:45','Belkix','Cosmeticos',200,2.34,5.34);
+SELECT * from logProducto;
+
+
+update products set productScale ='2:50'  where productCode='Cosm1009';
+SELECT * from logProducto;
+
